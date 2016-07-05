@@ -38,7 +38,13 @@ describe Pundit do
     end
   end
 
+  describe ".authorize_scope" do
+    it "infers and applies a scope based on it"
+  end
+
   describe ".policy_scope" do
+    it "becomes a call to #authorized_scope(scope, :resolve)"
+
     it "returns an instantiated policy scope given a plain model class" do
       expect(Pundit.policy_scope(user, Post)).to eq :published
     end
@@ -86,6 +92,14 @@ describe Pundit do
         Pundit.policy_scope!(user, nil)
       end.to raise_error(Pundit::NotDefinedError, "unable to find policy scope of nil")
     end
+  end
+
+  describe ".scope_policy" do
+    it "returns an instantiated scope policy given a scope"
+  end
+
+  describe ".scope_policy!" do
+    it "does whatever it have to be done"
   end
 
   describe ".policy" do
@@ -296,6 +310,19 @@ describe Pundit do
     end
   end
 
+  describe "#verify_scope_authorized" do
+    it "does nothing when policy_scope is used" do
+      pending
+      controller.authorize_scope(Post)
+      controller.verify_scope_authorized
+    end
+
+    it "raises an exception when policy_scope is not used" do
+      pending
+      expect { controller.verify_scope_authorized }.to raise_error(Pundit::PolicyScopingNotPerformedError)
+    end
+  end
+
   describe "#verify_policy_scoped" do
     it "does nothing when policy_scope is used" do
       controller.policy_scope(Post)
@@ -326,6 +353,19 @@ describe Pundit do
 
     it "is false when policy scope is not used" do
       expect(controller.pundit_policy_scoped?).to be false
+    end
+  end
+
+  describe "#pundit_scope_policy_authorized?" do
+    it "is true when policy_scope is used" do
+      pending
+      controller.authorize_scope(Post)
+      expect(controller.pundit_policy_scope_authorized?).to be true
+    end
+
+    it "is false when policy scope is not used" do
+      pending
+      expect(controller.pundit_policy_scope_authorized?).to be false
     end
   end
 
@@ -374,6 +414,14 @@ describe Pundit do
     end
   end
 
+  describe "#authorize_scope" do
+    it "infers the policy name and authorizes based on it"
+  end
+
+  describe "#skip_scope_authorization" do
+    it "disables scope policy verification"
+  end
+
   describe "#skip_policy_scope" do
     it "disables policy scope verification" do
       controller.skip_policy_scope
@@ -406,7 +454,13 @@ describe Pundit do
     end
   end
 
+  describe "#scope_policy" do
+    it "returns an instantiated scope policy"
+  end
+
   describe "#policy_scope" do
+    it "becomes a call to #authorized_scope(scope, :resolve)"
+
     it "returns an instantiated policy scope" do
       expect(controller.policy_scope(Post)).to eq :published
     end
